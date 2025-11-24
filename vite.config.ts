@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // Имя репозитория
-const repoName = 'TaskLite'
+const repoName = 'tasklite'
 
 export default defineConfig({
 plugins: [react()],
