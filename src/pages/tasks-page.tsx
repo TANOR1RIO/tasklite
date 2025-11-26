@@ -195,7 +195,6 @@ export function TasksPage() {
         return task.title.toLowerCase().includes(query.toLowerCase());
     });
 
-    // Сортировка по дате (task.created — объект Date)
     const sortedTasks = [...searchedTasks].sort((a, b) => {
         const timeA = a.created.getTime();
         const timeB = b.created.getTime();
@@ -238,21 +237,27 @@ export function TasksPage() {
         }));
     }
 
-    function handleSaveTask(id: string, newTitle: string, newDescription?: string) {
+        function handleSaveTask(
+        id: string,
+        newTitle: string,
+        newDescription?: string,
+        newDeadline?: string | null
+        ) {
         setTasks(
             tasks.map(task => {
-                if (task.id === id) {
-                    return {
-                        ...task,
-                        title: newTitle,
-                        createdText: newDescription
-                    };
-                }
-                return task;
+            if (task.id === id) {
+                return {
+                ...task,
+                title: newTitle,
+                createdText: newDescription,
+                deadline: newDeadline ?? null,
+                };
+            }
+            return task;
             })
         );
         setEditingTask(null);
-    }
+        }
 
     function toggleDescription(taskId: string) {
         if (showDescriptionId === taskId) {
@@ -269,21 +274,43 @@ export function TasksPage() {
     return (
         <Wrapper>
             <ContainerInput>
-                <StyledInput value={task} onChange={event => setTask(event.target.value)}type="text" placeholder="Введите задачу..."/>
+                <StyledInput
+                    value={task}
+                    onChange={event => setTask(event.target.value)}
+                    type="text"
+                    placeholder="Введите задачу..."
+                />
                 <Button onClick={() => handleAddItem(task)} label="Добавить" />
             </ContainerInput>
             <ContainerInput>
-                <StyledInput value={query}  onChange={e => setQuery(e.target.value)} type="text" placeholder="Поиск задач..."/>
+                <StyledInput
+                    value={query}
+                    onChange={e => setQuery(e.target.value)}
+                    type="text"
+                    placeholder="Поиск задач..."
+                />
             </ContainerInput>
 
             <FiltersContainer>
-                <FilterButton isActive={filter === 'all'} onClick={() => setFilter('all')}>All</FilterButton>
-                <FilterButton isActive={filter === 'active'} onClick={() => setFilter('active')}>Active</FilterButton>
-                <FilterButton isActive={filter === 'completed'} onClick={() => setFilter('completed')}>Completed</FilterButton>
+                <FilterButton isActive={filter === 'all'} onClick={() => setFilter('all')}>
+                    All
+                </FilterButton>
+                <FilterButton isActive={filter === 'active'} onClick={() => setFilter('active')}>
+                    Active
+                </FilterButton>
+                <FilterButton
+                    isActive={filter === 'completed'}
+                    onClick={() => setFilter('completed')}
+                >
+                    Completed
+                </FilterButton>
             </FiltersContainer>
-            
+
             <FiltersContainer>
-                <SortSelect value={sortOrder} onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest')}>
+                <SortSelect
+                    value={sortOrder}
+                    onChange={e => setSortOrder(e.target.value as 'newest' | 'oldest')}
+                >
                     <option value="newest">Сначала новые</option>
                     <option value="oldest">Сначала старые</option>
                 </SortSelect>
@@ -296,7 +323,8 @@ export function TasksPage() {
                 onRemove={handleRemoveItem}
                 onToggle={handleToggleItem}
                 showDescriptionId={showDescriptionId}
-                onShowDescription={toggleDescription}/>
+                onShowDescription={toggleDescription}
+            />
             <BottomStats
                 total={totalTasks}
                 active={activeTasks}
