@@ -163,7 +163,7 @@ export function TaskModal(props: TaskModalProp) {
           placeholder="Описание"
         />
         <label style={{ display: 'block', marginBottom: '4px', fontSize: '0.85rem' }}>
-          Дедлайн:
+          Дедлайн
         </label>
         <StyledDeadlineInput
           type="datetime-local"
